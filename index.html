@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YouTube Title Generator for Vloggers</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f3f4f6;
+      color: #111827;
+    }
+
+    .app {
+      width: min(680px, 92vw);
+      background: #ffffff;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      margin-top: 0;
+      margin-bottom: 16px;
+      text-align: center;
+      font-size: 1.6rem;
+    }
+
+    .controls {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: 1fr;
+      margin-bottom: 18px;
+    }
+
+    input,
+    select,
+    button {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      font-size: 1rem;
+    }
+
+    button {
+      background: #2563eb;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+    }
+
+    #titles {
+      list-style: decimal inside;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 8px;
+    }
+
+    #titles li {
+      padding: 10px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <h1>YouTube Title Generator for Vloggers</h1>
+    <div class="controls">
+      <input id="topic" type="text" placeholder="Enter vlog topic (e.g., trying street food in Tokyo)" />
+      <select id="genre">
+        <option value="Travel">Travel</option>
+        <option value="Daily Life">Daily Life</option>
+        <option value="Tech">Tech</option>
+        <option value="Food">Food</option>
+      </select>
+      <button id="generateBtn">Generate Titles</button>
+    </div>
+    <ol id="titles"></ol>
+  </main>
+
+  <script>
+    const topicInput = document.getElementById('topic');
+    const genreSelect = document.getElementById('genre');
+    const generateBtn = document.getElementById('generateBtn');
+    const titlesList = document.getElementById('titles');
+
+    const hypeWords = ['Amazing', 'Unbelievable', 'Epic', 'Must Watch'];
+    const numbers = [5, 7, 10, 12, 15, 20, 24, 30, 45, 60];
+
+    const templates = [
+      ({ genre, topic, hype }) => `${genre} Vlog: ${topic} – You Won't Believe What Happened`,
+      ({ genre, topic, number }) => `How I ${topic} in ${number} Minutes – ${genre} Vlog`,
+      ({ genre, topic }) => `The Truth About ${topic} – ${genre} Vlog`,
+      ({ genre, topic, hype }) => `${hype} ${genre} Vlog: My ${topic} Experience`,
+      ({ genre, topic, number }) => `${number} Things I Learned from ${topic} | ${genre} Vlog`,
+      ({ genre, topic, hype }) => `${topic} Challenge (${genre} Vlog) – ${hype}!`,
+      ({ genre, topic }) => `What Really Happens When You ${topic} – ${genre} Vlog`,
+      ({ genre, topic, number }) => `I Tried ${topic} for ${number} Hours – ${genre} Vlog`,
+      ({ genre, topic, hype }) => `${genre} Vlog: ${topic} Gone ${hype.toUpperCase()}`,
+      ({ genre, topic }) => `Before You ${topic}, Watch This ${genre} Vlog`
+    ];
+
+    function randomFrom(array) {
+      return array[Math.floor(Math.random() * array.length)];
+    }
+
+    function generateTitles() {
+      const topicValue = topicInput.value.trim() || 'my latest adventure';
+      const genreValue = genreSelect.value;
+
+      const generated = templates.map((template) =>
+        template({
+          genre: genreValue,
+          topic: topicValue,
+          hype: randomFrom(hypeWords),
+          number: randomFrom(numbers)
+        })
+      );
+
+      titlesList.innerHTML = generated
+        .slice(0, 10)
+        .map((title) => `<li>${title}</li>`)
+        .join('');
+    }
+
+    generateBtn.addEventListener('click', generateTitles);
+  </script>
+</body>
+</html>
